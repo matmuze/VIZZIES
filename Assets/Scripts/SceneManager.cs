@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using SimpleJSON;
 
 enum InstanceState
 {
@@ -46,6 +47,8 @@ public class SceneManager : MonoBehaviour
     public List<Vector4> CurveIngredientsColors = new List<Vector4>();
 
     //--------------------------------------------------------------
+	public JSONNode AllIngredients;
+	//--------------------------------------------------------------
 
     public int NumLodLevels = 0;
     public int SelectedElement = -1;
@@ -340,6 +343,7 @@ public class SceneManager : MonoBehaviour
 
     public void SetSelectedElement(int elementId)
     {
+		if (elementId >= ProteinInstancePositions.Count) return;
         Debug.Log("Selected element id: " + elementId);
         SelectedElement = elementId;
     }

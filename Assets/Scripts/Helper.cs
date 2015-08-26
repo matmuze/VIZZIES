@@ -6,6 +6,10 @@ using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public static class Helper
 {
     public static Matrix4x4 quaternion_outer(Quaternion q1, Quaternion q2)
@@ -276,6 +280,29 @@ public static class Helper
         var data = JSONNode.Parse(fileContents);
         return data;
     }
+
+	public static JSONNode GetAllIngredientsInfo()
+	{
+		Debug.Log("Downloading all ingredients file");
+		var www = new WWW("https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/recipes/allIngredients.json");
+		var path = PdbLoader.DefaultPdbDirectory + "allIngredients.json";
+		if (!File.Exists (path)) {
+			#if UNITY_EDITOR
+			while (!www.isDone)
+			{
+				EditorUtility.DisplayProgressBar("Downloading all ingredient info", "Downloading...", www.progress);
+			}
+			EditorUtility.ClearProgressBar();
+			#endif
+
+			if (!string.IsNullOrEmpty (www.error))
+				throw new Exception ("allIngredients.json" + www.error);
+			//var path = (string.IsNullOrEmpty (dstPath) ? DefaultPdbDirectory : dstPath) + "allIngredients.json";
+			File.WriteAllText (path, www.text);
+		}
+		var resultData = Helper.ParseJson(path);
+		return resultData;
+	}
 
     public static int GetIdFromColor(Color color)
     {
