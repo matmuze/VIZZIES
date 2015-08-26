@@ -17,7 +17,7 @@ public class HandleSelection : MonoBehaviour {
 	string filterForPrefix(string name){
 		string iname = name;
 		var elem = name.Split('_');
-		if (elem [0].StartsWith ("cytopasme") || elem [0].StartsWith ("interior") || elem [0].StartsWith ("surface")) {
+		if (elem [0].StartsWith ("cytoplasme") || elem [0].StartsWith ("interior") || elem [0].StartsWith ("surface")) {
 			iname = name.Replace(elem[0]+"_","");
 		}
 		return iname;
